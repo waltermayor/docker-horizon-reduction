@@ -36,10 +36,13 @@ jobs:
       - name: Install SingularityCE
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget build-essential libseccomp-dev pkg-config squashfs-tools cryptsetup
-          export VERSION=4.1.2
-          wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-ce_${VERSION}-amd64.deb
-          sudo dpkg -i singularity-ce_${VERSION}-amd64.deb
+          sudo apt-get install -y apt-transport-https gnupg
+          sudo mkdir -p /etc/apt/keyrings
+          wget -O- https://release.sylabs.io/sylabs-release.key | gpg --dearmor | sudo tee /etc/apt/keyrings/sylabs.gpg > /dev/null
+          echo "deb [signed-by=/etc/apt/keyrings/sylabs.gpg] https://release.sylabs.io/apt/$(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/sylabs.list
+          sudo apt-get update
+          sudo apt-get install -y singularity-ce
+
 
       - name: Build SIF from GHCR image
         run: |
