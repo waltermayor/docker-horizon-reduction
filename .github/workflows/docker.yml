@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GitHub Container Registry (Docker)
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
@@ -40,6 +40,10 @@ jobs:
           wget https://github.com/sylabs/singularity/releases/download/v4.2.2/singularity-ce_4.2.2-noble_amd64.deb
           sudo apt install -y ./singularity-ce_4.2.2-noble_amd64.deb
 
+      - name: Authenticate Singularity with GHCR
+        run: |
+          echo "${{ secrets.GHCR_PAT }}" | singularity remote login --username ${{ github.repository_owner }} --password-stdin oras://ghcr.io
+
       - name: Build SIF from GHCR image
         run: |
           singularity build horizon.sif docker://ghcr.io/${{ github.repository_owner }}/docker-horizon-reduction:latest
@@ -57,4 +61,3 @@ jobs:
         with:
           name: horizon-sif
           path: horizon.sif
-
