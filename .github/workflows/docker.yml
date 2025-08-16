@@ -51,7 +51,7 @@ jobs:
           echo "✅ SIF built and tested successfully"
 
       - name: Upload SIF as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: horizon-sif
           path: horizon.sif
