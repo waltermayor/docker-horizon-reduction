@@ -41,6 +41,9 @@ jobs:
           sudo apt install -y ./singularity-ce_4.2.2-noble_amd64.deb
 
       - name: Build SIF from GHCR image
+        env:
+          SINGULARITY_DOCKER_USERNAME: ${{ github.actor }}
+          SINGULARITY_DOCKER_PASSWORD: ${{ secrets.GHCR_PAT }}
         run: |
           singularity build horizon.sif docker://ghcr.io/${{ github.repository_owner }}/docker-horizon-reduction:latest
 
