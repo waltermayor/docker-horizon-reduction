@@ -23,11 +23,11 @@ jobs:
 
       - name: Build image with Docker Compose
         run: |
-          docker-compose build
+          docker compose build
 
       - name: Run tests inside container
         run: |
-          docker-compose run --rm app bash test.sh
+          docker compose run --rm app bash test.sh
 
       - name: Push image to GHCR
         run: |
