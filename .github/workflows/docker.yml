@@ -33,16 +33,12 @@ jobs:
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/docker-horizon-reduction:latest
 
-      - name: Install SingularityCE
+      - name: Install SingularityCE (Singularity)
         run: |
           sudo apt-get update
-          sudo apt-get install -y apt-transport-https gnupg
-          sudo mkdir -p /etc/apt/keyrings
-          wget -O- https://release.sylabs.io/sylabs-release.key | gpg --dearmor | sudo tee /etc/apt/keyrings/sylabs.gpg > /dev/null
-          echo "deb [signed-by=/etc/apt/keyrings/sylabs.gpg] https://release.sylabs.io/apt/$(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/sylabs.list
-          sudo apt-get update
-          sudo apt-get install -y singularity-ce
-
+          sudo apt-get install -y wget squashfs-tools
+          wget https://github.com/sylabs/singularity/releases/download/v4.2.2/singularity-ce_4.2.2-noble_amd64.deb
+          sudo apt install -y ./singularity-ce_4.2.2-noble_amd64.deb
 
       - name: Build SIF from GHCR image
         run: |
@@ -61,3 +57,4 @@ jobs:
         with:
           name: horizon-sif
           path: horizon.sif
+
