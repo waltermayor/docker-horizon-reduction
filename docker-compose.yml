@@ -8,7 +8,9 @@ services:
       - ./shared:/data   # Carpeta compartida host <-> contenedor
     stdin_open: true
     tty: true
-    device_requests:     # Habilitar acceso a GPU
-      - driver: nvidia
-        count: all
-        capabilities: [gpu]
+    # device_requests:     # Habilitar acceso a GPU: esto no es necesario para .sif
+    #   - driver: nvidia   
+    #     count: all
+    #     capabilities: [gpu]
+    # Singularity no empaqueta el driver ni la GPU
+    # En cambio, monta automáticamente los drivers de NVIDIA y expone las GPU
