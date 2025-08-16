@@ -1,21 +1,26 @@
-# Imagen base con CUDA y Python
+# Imagen base con CUDA
 FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
 
-# Evita prompts interactivos
+# Evitar interacciones durante instalación
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instala Python y dependencias
+# Instalar dependencias
 RUN apt-get update && apt-get install -y \
-    python3 python3-pip git && \
-    rm -rf /var/lib/apt/lists/*
+    python3 python3-pip git curl wget \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copia requirements si existen
-COPY requirements.txt /tmp/requirements.txt
-RUN pip3 install --no-cache-dir -r /tmp/requirements.txt || true
+# Crear carpeta de trabajo
+WORKDIR /workspace
 
-# Copia el script de prueba
-COPY test.sh /test.sh
-RUN chmod +x /test.sh
+# Copiar requirements.txt (si existe)
+COPY requirements.txt /workspace/
+
+# Instalar dependencias de Python
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Copiar el script de test
+COPY test.sh /workspace/test.sh
+RUN chmod +x /workspace/test.sh
 
 # Default command
-CMD ["bash", "/test.sh"]
+CMD ["/bin/bash"]

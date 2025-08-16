@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    image: ghcr.io/waltermayor/docker-horizon-reduction:latest
+    volumes:
+      - ./shared:/data   # Carpeta compartida host <-> contenedor
+    stdin_open: true
+    tty: true
+    device_requests:     # Habilitar acceso a GPU
+      - driver: nvidia
+        count: all
+        capabilities: [gpu]
