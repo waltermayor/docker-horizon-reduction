@@ -33,21 +33,24 @@ jobs:
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/docker-horizon-reduction:latest
 
-      - name: Install Apptainer
+      - name: Install SingularityCE
         run: |
           sudo apt-get update
-          sudo apt-get install -y apptainer
+          sudo apt-get install -y wget build-essential libseccomp-dev pkg-config squashfs-tools cryptsetup
+          export VERSION=4.1.2
+          wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-ce_${VERSION}-amd64.deb
+          sudo dpkg -i singularity-ce_${VERSION}-amd64.deb
 
       - name: Build SIF from GHCR image
         run: |
-          apptainer build horizon.sif docker://ghcr.io/${{ github.repository_owner }}/docker-horizon-reduction:latest
+          singularity build horizon.sif docker://ghcr.io/${{ github.repository_owner }}/docker-horizon-reduction:latest
 
       - name: Test SIF image (basic)
         run: |
           echo "=== Inspecting SIF ==="
-          apptainer inspect horizon.sif
+          singularity inspect horizon.sif
           echo "=== Running a simple command inside the SIF ==="
-          apptainer exec horizon.sif python3 --version || true
+          singularity exec horizon.sif python3 --version || true
           echo "✅ SIF built and tested successfully"
 
       - name: Upload SIF as artifact
