@@ -8,10 +8,15 @@ python3 --version
 
 # Verificar que PyTorch se puede importar
 python3 - <<'EOF'
-import torch
-print("PyTorch importado correctamente ✅")
-print("Versión:", torch.__version__)
-print("CUDA disponible en este entorno?:", torch.cuda.is_available())
+import jax
+import jax.numpy as jnp
+
+print("✅ JAX importado correctamente")
+print("Versión:", jax.__version__)
+
+# Revisar dispositivos disponibles
+devices = jax.devices()
+print("Dispositivos detectados:", devices)
 EOF
 
 # Verificar que tu app se ejecuta al menos en modo CPU
