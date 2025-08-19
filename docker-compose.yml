@@ -5,7 +5,7 @@ services:
     build: .
     image: ghcr.io/waltermayor/docker-horizon-reduction:latest
     volumes:
-      - ./shared:/data   # Carpeta compartida host <-> contenedor
+      - ./shared:/workspace/shared   # Carpeta compartida host <-> contenedor
     stdin_open: true
     tty: true
     # device_requests:     # Habilitar acceso a GPU: esto no es necesario para .sif
