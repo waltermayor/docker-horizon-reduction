@@ -20,6 +20,7 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
 
 # Crear carpeta de trabajo
 WORKDIR /workspace
+RUN mkdir -p /workspace/shared
 
 # Copiar requirements.txt (si existe)
 COPY requirements.txt /workspace/
